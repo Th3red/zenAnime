@@ -5,17 +5,41 @@ import './App.css';
 function App() {
     const [character, setCharacter] = useState(null);
     const [quote, setQuote] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    const [imageSource, setImageSource] = useState('');
+    const [imageTags, setImageTags] = useState('');
     const [quoteSource, setQuoteSource] = useState(''); // track api source for logging
+    const [animeSource, setAnimeSource] = useState(''); // track api source for logging
+    const [error, setError] = useState('');
     const categories = ['waifu', 'neko', 'shinobu', 'megumin','waifu','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss', 'pat', 'waifu', 'waifu', 'smug','waifu','waifu', 'bonk', 'yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy','waifu', 'waifu', 'wink', 'poke','waifu', 'waifu', 'dance','waifu', 'cringe'];
    // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
     // Fetch random anime character
     const fetchAnimeCharacter = async () => {
+        const animeRandom = Math.random() < 0.5;
         const randomCategory = categories[Math.floor(Math.random() * categories.length)]; // generate random number to select from categories
         try {
-            const response = await axios.get(`https://api.waifu.pics/sfw/${randomCategory}`);
-            setCharacter(response.data); // Set the character data
+            let response;
+            if (animeRandom) {
+                response = await fetch('https://corsproxy.io/?https://pic.re/image');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const imageBlob = await response.blob(); // Get the image blob
+                const imageUrl = URL.createObjectURL(imageBlob); // Create a local URL for the image blob
+                setImageUrl(imageUrl); // Set the image URL
+                setImageSource(response.headers.get('image_source')); // Get image source from headers
+                setImageTags(response.headers.get('image_tags')); // Get image tags from headers
+                setCharacter(null);
+                setAnimeSource('Pic.re');
+            } else {
+                response = await axios.get(`https://api.waifu.pics/sfw/${randomCategory}`);
+                setCharacter(response.data); // Set the character data
+                setAnimeSource('waif.ioapi');
+            }
+            console.log(`Anime Image Source: ${animeSource}`);
         } catch (error) {
             console.error("Error fetching character:", error);
+            setError("Failed to fetch random image.");
         }
     };
 
@@ -62,19 +86,26 @@ function App() {
                         alt="Random Anime Character" 
                         style={{ width: '1000px', height: 'auto' }} // Adjust size as needed
                     />
+                </>
+                ) : (
+                    <img 
+                        src={imageUrl} 
+                        alt="Random Anime" 
+                        style={{ width: '1000px', height: 'auto' }} 
+                    />
+                )}
+
+
                     <div className="quote">
                       <h4>{quote || "Loading quote...."}</h4> {/* Display the quote */}
                     </div>
+                   
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
                     <button className="button" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); }}>New</button>
                     <footer>
                         Inspirational quotes provided by <a href="https://zenquotes.io/" target="_blank" rel="noopener noreferrer">ZenQuotes API</a>
                     </footer>
-                </>
-            ) : (
-                <p>Loading character image...</p>
-            )}
-            
-            
+               
         </div>
     );
 }
