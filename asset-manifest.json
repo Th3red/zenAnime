@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/zenAnime/static/css/main.f7e318f3.css",
+    "main.js": "/zenAnime/static/js/main.759a6b6e.js",
+    "index.html": "/zenAnime/index.html",
+    "main.f7e318f3.css.map": "/zenAnime/static/css/main.f7e318f3.css.map",
+    "main.759a6b6e.js.map": "/zenAnime/static/js/main.759a6b6e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f7e318f3.css",
+    "static/js/main.759a6b6e.js"
+  ]
+}
