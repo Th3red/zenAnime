@@ -11,7 +11,7 @@ function App() {
     const [quoteSource, setQuoteSource] = useState(''); // track api source for logging
     const [animeSource, setAnimeSource] = useState(''); // track api source for logging
     const [error, setError] = useState('');
-    const categories = ['waifu', 'neko', 'shinobu', 'megumin','waifu','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss', 'pat', 'waifu', 'waifu', 'smug','waifu','waifu', 'bonk', 'yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy','waifu', 'waifu', 'wink', 'poke','waifu', 'waifu', 'dance','waifu', 'cringe'];
+    const categories = ['waifu', 'neko', 'shinobu', 'megumin','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss', 'pat', 'waifu', 'smug','waifu','waifu', 'bonk', 'yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy', 'waifu', 'wink','happy', 'poke','waifu', 'happy', 'dance','happy', 'cringe'];
    // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
     // Fetch random anime character
     const fetchAnimeCharacter = async () => {
@@ -84,13 +84,17 @@ function App() {
                     <img 
                         src={character.url} // Access the image URL from the fetched character data
                         alt="Random Anime Character" 
+                        loading="lazy"
                         style={{ width: '1000px', height: 'auto' }} // Adjust size as needed
+                        className="img-fluid"
                     />
                 </>
                 ) : (
                     <img 
                         src={imageUrl} 
                         alt="Random Anime" 
+                        loading = "lazy"
+                        className="img-fluid"
                         style={{ width: '1000px', height: 'auto' }} 
                     />
                 )}
@@ -101,7 +105,7 @@ function App() {
                     </div>
                    
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button className="button" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); }}>New</button>
+                    <button className="btn btn-primary" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); }}>New</button>
                     <footer>
                         Inspirational quotes provided by <a href="https://zenquotes.io/" target="_blank" rel="noopener noreferrer">ZenQuotes API</a>
                     </footer>
