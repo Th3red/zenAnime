@@ -1,3 +1,7 @@
+# Anime Zen
+Website that displays Anime Image with a zen quote
+- 
+-
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
