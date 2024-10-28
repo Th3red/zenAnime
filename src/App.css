@@ -19,16 +19,6 @@ h1 {
   color: #424242;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  overflow-Wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
-}
-
 
 .quote {
   display: flex;
@@ -50,10 +40,11 @@ h1 {
   word-break: break-word;
   white-space: normal;
 }
+
 /* Styles for larger screens (PC) */
 @media (min-width: 768px) {
   .quote {
-      width: 1000px;
+      width: 100%;
       max-width: 100%; /* Adjust to take up a maximum of 60% of the container on larger screens */
       font-size: 1.2em; /* Increase font size for better readability */
   }
@@ -86,7 +77,71 @@ img {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin-top: 20px;
 }
+@media (min-width: 768px) {
+  .image {
+      width: 1000px;
+      max-width: 100%; /* Adjust to take up a maximum of 60% of the container on larger screens */
+  }
+}
+@media (max-width: 767px) {
+  .image {
+      max-width: 100%; /* Adjust to take up a maximum of 90% of the container on smaller screens */
+  }
+}
+.image-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+}
 
+.img-fluid {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.temperature-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0); /* Semi-transparent background for readability */
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1.2em;
+}
+.shiny-text {
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+  position: relative;
+  background: linear-gradient(90deg, #fff, #e5e5e5, #fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+
+.temperature-text {
+  font-size: 3em;
+}
+
+.weather-code-text {
+  font-size: 1.5em;
+}
+
+/* Optional: Add a glow effect */
+.temperature-overlay p {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 
+               0 0 20px rgba(255, 255, 255, 0.3);
+}
 button {
   margin-top: 20px;
   padding: 10px 20px;

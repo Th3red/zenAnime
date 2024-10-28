@@ -12,7 +12,43 @@ function App() {
     const [animeSource, setAnimeSource] = useState(''); // track api source for logging
     const [error, setError] = useState('');
     const categories = ['waifu', 'neko', 'shinobu','smile','smile','smile','megumin','cry', 'megumin','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss','smug','smug','smug', 'pat', 'waifu', 'smug','waifu','waifu', 'bonk', 'smug','yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy', 'waifu', 'wink','happy', 'poke','waifu', 'happy', 'dance','happy', 'cringe'];
-   // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
+    // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
+    const [weather, setWeather] = useState(null);
+    // Map weather code to description
+    const interpretWeatherCode = (code) => {
+        const codeMap = {
+            0: "Clear sky",
+            1: "Mainly clear",
+            2: "Partly cloudy",
+            3: "Overcast",
+            45: "Fog",
+            48: "Depositing rime fog",
+            51: "Drizzle (light)",
+            53: "Drizzle (moderate)",
+            55: "Drizzle (dense)",
+            56: "Freezing drizzle (light)",
+            57: "Freezing drizzle (dense)",
+            61: "Rain (slight)",
+            63: "Rain (moderate)",
+            65: "Rain (heavy)",
+            66: "Freezing rain (light)",
+            67: "Freezing rain (heavy)",
+            71: "Snowfall (slight)",
+            73: "Snowfall (moderate)",
+            75: "Snowfall (heavy)",
+            77: "Snow grains",
+            80: "Rain showers (slight)",
+            81: "Rain showers (moderate)",
+            82: "Rain showers (violent)",
+            85: "Snow showers (slight)",
+            86: "Snow showers (heavy)",
+            95: "Thunderstorm (slight or moderate)",
+            96: "Thunderstorm with hail (slight)",
+            99: "Thunderstorm with hail (heavy)"
+        };
+        return codeMap[code] || "Unknown weather condition";
+    };
+    
     // Fetch random anime character
     const fetchAnimeCharacter = async () => {
         const animeRandom = Math.random() < 0.2;
@@ -71,39 +107,70 @@ function App() {
             setQuoteSource(''); // Reset source
         }
     };
+    
+
+    // Fetch weather data
+    const fetchWeather = async () => {
+        try {
+            const response = await axios.get('https://api.open-meteo.com/v1/forecast', {
+                params: {
+                    latitude: 39.7392,
+                    longitude: -104.9847,
+                    current: 'temperature_2m,weather_code',
+                    timezone: 'auto',
+                    forecast_days: 1,
+                    models: 'best_match',
+                }
+            });
+            setWeather(response.data); // Adjust based on desired data
+        } catch (error) {
+            console.error("Error fetching weather data:", error);
+        }
+    };
+
 
     useEffect(() => {
         fetchAnimeCharacter();
         fetchZenQuote(); // Fetch a random quote on component mount
+        fetchWeather();
     }, []);
 
     return (
-        <div className = "main-container">
+        <div className="main-container">
             <h1>Anime Zen</h1>
-            {character ? (
-                <>
-                    <img 
-                        src={character.url} // Access the image URL from the fetched character data
-                        alt="Random Anime Character" 
+
+            <div className="image-container">
+                {character ? (
+                    <img
+                        src={character.url}
+                        alt="Random Anime Character"
                         loading="lazy"
-                        style={{ width: '1000px', maxheight: '80vh', objectFit: 'cover' }} // Adjust size as needed
+                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(70%) blur(0.2px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
+                            backgroundBlendMode: 'multiply' }}
                         className="img-fluid"
                     />
-                </>
                 ) : (
-                    <img 
-                        src={imageUrl} 
-                        alt="Random Anime" 
-                        loading = "lazy"
+                    <img
+                        src={imageUrl}
+                        alt="Random Anime"
+                        loading="lazy"
+                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(70%) blur(0.3px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
+                            backgroundBlendMode: 'multiply' }}
+                        
                         className="img-fluid"
-                        style={{ width: '1000px', maxheight: '80vh', objectFit: 'cover'}} 
                     />
                 )}
-
-
-                    <div className="quote">
-                      <h4>{quote || "Loading quote...."}</h4> {/* Display the quote */}
+                {weather ? (
+                    <div className="temperature-overlay">
+                        <p className="shiny-text temperature-text">{weather.current?.temperature_2m || "No Data"}°C</p>
+                        <p className="shiny-text weather-code-text">{interpretWeatherCode(weather.current?.weather_code)}</p>
                     </div>
+                ):(<p></p>)}
+            </div>
+
+            <div className="quote">
+                <h4 className="quote-text">{quote || "Loading quote...."}</h4>
+            </div>
                    
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <button className="btn btn-primary" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); }}>New</button>
