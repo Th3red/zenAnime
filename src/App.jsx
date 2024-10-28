@@ -23,7 +23,9 @@ function App() {
     // Fetch a random zen quote
     const fetchZenQuote = async () => {
       try {
-          const response = await fetch('http://localhost:3000/quote');
+          const response = await fetch('https://zenanime.onrender.com');
+
+          //const response = await fetch('http://localhost:3000/quote');
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
           }

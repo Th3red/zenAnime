@@ -1,9 +1,12 @@
 // server.mjs
+// to run server.js
 import express from 'express';
 import https from 'https';
+import cors from 'cors';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors());
+const PORT = process.env.PORT || 1000;
 
 // Route to fetch a random quote
 app.get('/quote', (req, res) => {
