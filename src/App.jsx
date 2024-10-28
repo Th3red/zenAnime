@@ -11,11 +11,11 @@ function App() {
     const [quoteSource, setQuoteSource] = useState(''); // track api source for logging
     const [animeSource, setAnimeSource] = useState(''); // track api source for logging
     const [error, setError] = useState('');
-    const categories = ['waifu', 'neko', 'shinobu', 'megumin','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss', 'pat', 'waifu', 'smug','waifu','waifu', 'bonk', 'yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy', 'waifu', 'wink','happy', 'poke','waifu', 'happy', 'dance','happy', 'cringe'];
+    const categories = ['waifu', 'neko', 'shinobu','smile','smile','smile','megumin','cry', 'megumin','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss','smug','smug','smug', 'pat', 'waifu', 'smug','waifu','waifu', 'bonk', 'smug','yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy', 'waifu', 'wink','happy', 'poke','waifu', 'happy', 'dance','happy', 'cringe'];
    // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
     // Fetch random anime character
     const fetchAnimeCharacter = async () => {
-        const animeRandom = Math.random() < 0.5;
+        const animeRandom = Math.random() < 0.2;
         const randomCategory = categories[Math.floor(Math.random() * categories.length)]; // generate random number to select from categories
         try {
             let response;
@@ -46,7 +46,8 @@ function App() {
     // Fetch a random zen quote
     // Function to fetch quotes from either Quotable.io or ZenQuotes.io
     const fetchZenQuote = async () => {
-        const useQuotable = Math.random() < 0.5; // Randomly decide which API to use (50% chance each)
+        
+        const useQuotable = Math.random() < 0.01; // Randomly decide which API to use (1% chance to choose quotable API)
         try {
             let response;
             if (useQuotable) {
@@ -77,7 +78,7 @@ function App() {
     }, []);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center', padding: '20px'}}>
+        <div className = "main-container">
             <h1>Anime Zen</h1>
             {character ? (
                 <>
@@ -85,7 +86,7 @@ function App() {
                         src={character.url} // Access the image URL from the fetched character data
                         alt="Random Anime Character" 
                         loading="lazy"
-                        style={{ width: '1000px', height: 'auto' }} // Adjust size as needed
+                        style={{ width: '1000px', maxheight: '80vh', objectFit: 'cover' }} // Adjust size as needed
                         className="img-fluid"
                     />
                 </>
@@ -95,7 +96,7 @@ function App() {
                         alt="Random Anime" 
                         loading = "lazy"
                         className="img-fluid"
-                        style={{ width: '1000px', height: 'auto' }} 
+                        style={{ width: '1000px', maxheight: '80vh', objectFit: 'cover'}} 
                     />
                 )}
 
