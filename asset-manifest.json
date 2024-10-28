@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/zenAnime/static/css/main.041b5c31.css",
-    "main.js": "/zenAnime/static/js/main.445a1213.js",
+    "main.css": "/zenAnime/static/css/main.84d1e443.css",
+    "main.js": "/zenAnime/static/js/main.bd5694dd.js",
     "index.html": "/zenAnime/index.html",
-    "main.041b5c31.css.map": "/zenAnime/static/css/main.041b5c31.css.map",
-    "main.445a1213.js.map": "/zenAnime/static/js/main.445a1213.js.map"
+    "main.84d1e443.css.map": "/zenAnime/static/css/main.84d1e443.css.map",
+    "main.bd5694dd.js.map": "/zenAnime/static/js/main.bd5694dd.js.map"
   },
   "entrypoints": [
-    "static/css/main.041b5c31.css",
-    "static/js/main.445a1213.js"
+    "static/css/main.84d1e443.css",
+    "static/js/main.bd5694dd.js"
   ]
 }
