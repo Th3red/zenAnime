@@ -1,5 +1,3 @@
-
-///// bottom one is for waifu api
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -7,6 +5,7 @@ import './App.css';
 function App() {
     const [character, setCharacter] = useState(null);
     const [quote, setQuote] = useState('');
+    const [quoteSource, setQuoteSource] = useState(''); // track api source for logging
     const categories = ['waifu', 'neko', 'shinobu', 'megumin','waifu','megumin', 'waifu', 'cuddle', 'cry', 'waifu', 'hug', 'waifu', 'kiss', 'pat', 'waifu', 'waifu', 'smug','waifu','waifu', 'bonk', 'yeet', 'blush', 'smile', 'wave','waifu', 'highfive','waifu', 'handhold', 'kill', 'happy','waifu', 'waifu', 'wink', 'poke','waifu', 'waifu', 'dance','waifu', 'cringe'];
    // const categories = ['waifu', 'smug', 'neko', 'shinobu', 'megumin','pat', 'cringe']; // use this for mostly images.jpg
     // Fetch random anime character
@@ -21,20 +20,31 @@ function App() {
     };
 
     // Fetch a random zen quote
+    // Function to fetch quotes from either Quotable.io or ZenQuotes.io
     const fetchZenQuote = async () => {
-      try {
-          const response = await fetch('https://zenanime.onrender.com');
-
-          //const response = await fetch('http://localhost:3000/quote');
-          if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          const data = await response.json();
-          setQuote(data[0].q); // Adjust according to the response structure
-      } catch (error) {
-          console.error("Error fetching quote:", error);
-          setQuote("Failed to fetch quote.");
-      }
+        const useQuotable = Math.random() < 0.5; // Randomly decide which API to use (50% chance each)
+        try {
+            let response;
+            if (useQuotable) {
+                response = await fetch('https://api.quotable.io/quotes/random'); // use quotable api
+                
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                setQuote(data[0].content); // Extract the quote from Quotable.io
+                setQuoteSource('Quotable.io'); // Set the source for loggi
+            } else {
+                response = await fetch('https://corsproxy.io/?https://zenquotes.io/api/random'); // Use a CORS proxy for zenquotes api
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                setQuote(data[0].q); // Extract the quote from ZenQuotes.io
+                setQuoteSource('ZenQuotes.io'); // Set the source for logging
+            }
+            console.log(`Quote Sorce: ${quoteSource}`); // log source api for the quotes retrieved
+        } catch (error) {
+            console.error("Error fetching quote:", error);
+            setQuote("Failed to fetch quote.");
+            setQuoteSource(''); // Reset source
+        }
     };
 
     useEffect(() => {
