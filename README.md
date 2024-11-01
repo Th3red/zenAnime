@@ -1,6 +1,6 @@
 # Anime Zen
 ## Description
-*Website that displays Todays weather and randomly generates Anime Image and a zen quote*
+*Website that displays Todays weather and randomly generates an Anime Image and a zen quote*
 ## APIS
 - zenquotes API [Zenquotes](https://zenquotes.io/)
 - weather API [Open-Meteo](https://open-meteo.com/en/docs)
