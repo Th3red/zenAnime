@@ -163,16 +163,42 @@ function App() {
                 language: 'en'
             }
         });
+
         const data = response.data.results[0].components;
         const location = response.data.results[0].formatted;
-        const city = data.city || data.town || data.village || data.county || location || "City not found";
-        
-        setLocationName(city);
+        //const city = data.city || data.town || data.village || data.county || location || "City not found";
+        const city = data.city;
+        const zipCode = data.postcode;
+
+        // If city is not found, try to get city from zip code
+        if (!city && zipCode) {
+            const cityFromZip = await getCityFromZip(zipCode);
+            setLocationName(cityFromZip);
+        } else {
+            setLocationName(city);
+        }
     } catch (error) {
         console.error("Error fetching location name:", error);
         setLocationName("Unknown location");
     }
 };
+
+const getCityFromZip = async (zipCode) => {
+    try {
+        const response = await axios.get(`https://api.zippopotam.us/us/${zipCode}`);
+        if (response.status === 200) {
+            const city = response.data.places[0]['place name'];
+            return city;
+        } else {
+            return "City not found for the given zip code.";
+        }
+    } catch (error) {
+        console.error("Error fetching city from zip code:", error);
+        return "Unknown city";
+    }
+};
+
+
     useEffect(() => {
         fetchAnimeCharacter();
         fetchZenQuote(); // Fetch a random quote on component mount
