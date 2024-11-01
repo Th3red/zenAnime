@@ -6,6 +6,7 @@ function App() {
     const [character, setCharacter] = useState(null);
     const [quote, setQuote] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [locationName, setLocationName] = useState('');
     const [imageSource, setImageSource] = useState('');
     const [imageTags, setImageTags] = useState('');
     const [quoteSource, setQuoteSource] = useState(''); // track api source for logging
@@ -133,25 +134,51 @@ function App() {
                 (position) => {
                     const { latitude, longitude } = position.coords;
                     fetchWeather(latitude, longitude); // Fetch weather using current location
+                    fetchLocationName(latitude, longitude);
                 },
                 (error) => {
                     console.error("Error getting location:", error);
-                    
-                    fetchWeather(39.7392, -104.9847); // Default to Denver, CO
+                    const defaultLatitude = 39.7392;
+                    const defaultLongitude = -104.9847;
+                    fetchWeather(defaultLatitude, defaultLongitude); // Default to Denver, CO
+                    fetchLocationName(defaultLatitude, defaultLongitude); // Fetch location name for default location
                 }
             );
         } else {
             console.error("Geolocation is not supported by this browser.");
-            fetchWeather(39.7392, -104.9847); // Default to Denver, CO
+            console.log("OpenCage API Key:", process.env.REACT_APP_OPENCAGE_API_KEY);
+            const defaultLatitude = 39.7392;
+            const defaultLongitude = -104.9847;
+            fetchWeather(defaultLatitude, defaultLongitude); // Default to Denver, CO
+            fetchLocationName(defaultLatitude, defaultLongitude);
         }
     };
-
+   // Fetch the location name using reverse geocoding
+   const fetchLocationName = async (latitude, longitude) => {
+    try {
+        const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
+            params: {
+                key: process.env.REACT_APP_OPENCAGE_API_KEY, // Replace with your OpenCage API key
+                q: `${latitude},${longitude}`,
+                language: 'en'
+            }
+        });
+        const data = response.data.results[0].components;
+        const location = response.data.results[0].formatted;
+        const city = data.city || data.town || data.village || data.county || location || "City not found";
+        
+        setLocationName(city);
+    } catch (error) {
+        console.error("Error fetching location name:", error);
+        setLocationName("Unknown location");
+    }
+};
     useEffect(() => {
         fetchAnimeCharacter();
         fetchZenQuote(); // Fetch a random quote on component mount
         getLocationAndFetchWeather();
     }, []);
-
+ 
     return (
         <div className="main-container">
             <h1>Anime Zen</h1>
@@ -180,6 +207,7 @@ function App() {
                 {weather ? (
                     <div className="temperature-overlay">
                         <p className="shiny-text temperature-text">{weather.current?.temperature_2m || "No Data"}°C</p>
+                        <p>{locationName || "Loading location..."}</p>
                         <p className="shiny-text weather-code-text">{interpretWeatherCode(weather.current?.weather_code)}</p>
                     </div>
                 ):(<p></p>)}
