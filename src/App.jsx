@@ -110,12 +110,12 @@ function App() {
     
 
     // Fetch weather data
-    const fetchWeather = async () => {
+    const fetchWeather = async (latitude, longitude) => {
         try {
             const response = await axios.get('https://api.open-meteo.com/v1/forecast', {
                 params: {
-                    latitude: 39.7392,
-                    longitude: -104.9847,
+                    latitude: latitude,
+                    longitude: longitude,
                     current: 'temperature_2m,weather_code',
                     timezone: 'auto',
                     forecast_days: 1,
@@ -127,12 +127,29 @@ function App() {
             console.error("Error fetching weather data:", error);
         }
     };
-
+    const getLocationAndFetchWeather = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    fetchWeather(latitude, longitude); // Fetch weather using current location
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    
+                    fetchWeather(39.7392, -104.9847); // Default to Denver, CO
+                }
+            );
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+            fetchWeather(39.7392, -104.9847); // Default to Denver, CO
+        }
+    };
 
     useEffect(() => {
         fetchAnimeCharacter();
         fetchZenQuote(); // Fetch a random quote on component mount
-        fetchWeather();
+        getLocationAndFetchWeather();
     }, []);
 
     return (
@@ -145,7 +162,7 @@ function App() {
                         src={character.url}
                         alt="Random Anime Character"
                         loading="lazy"
-                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(70%) blur(0.2px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
+                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(90%) blur(0.2px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
                             backgroundBlendMode: 'multiply' }}
                         className="img-fluid"
                     />
@@ -154,7 +171,7 @@ function App() {
                         src={imageUrl}
                         alt="Random Anime"
                         loading="lazy"
-                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(70%) blur(0.3px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
+                        style={{ width: '100%', maxHeight: '80vh', objectFit: 'cover', filter: 'contrast(150%) opacity(90%) brightness(90%) blur(0.3px) saturate(80%)',background: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3))',
                             backgroundBlendMode: 'multiply' }}
                         
                         className="img-fluid"
@@ -173,7 +190,7 @@ function App() {
             </div>
                    
                     {error && <p style={{ color: 'red' }}>{error}</p>}
-                    <button className="btn btn-primary" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); }}>New</button>
+                    <button className="btn btn-primary" onClick={() => { fetchAnimeCharacter(); fetchZenQuote(); getLocationAndFetchWeather(); }}>New</button>
                     <footer>
                         Inspirational quotes provided by <a href="https://zenquotes.io/" target="_blank" rel="noopener noreferrer">ZenQuotes API</a>
                     </footer>
