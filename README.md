@@ -1,5 +1,5 @@
 # Anime Zen
-- Deployed on Github Pages: https://th3red.github.io/zenAnime/
+Deployed on Github Pages: https://th3red.github.io/zenAnime/
 ## Description
 *Website that displays Todays weather and randomly generates an Anime Image and a zen quote*
 ## APIS
