@@ -8,6 +8,7 @@ Deployed on Github Pages: https://th3red.github.io/zenAnime/
 - anime image API [Waifu](https://waifu.pics/docs?ref=public_apis)
 - anime image API [Anime](https://doc.pic.re/)
 - OpenCage Geocoding API [OpenCageGeocoding](https://opencagedata.com/api#reverse-resp)
+- Zippopotam.us API [Zippopotam for Zipcodes](https://api.zippopotam.us/)
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
