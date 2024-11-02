@@ -1,7 +1,7 @@
 # Anime Zen
 Deployed on Github Pages: https://th3red.github.io/zenAnime/
 ## Description
-*Website that displays Todays Weather(US), City, and randomly generates an Anime Image and a zen quote. Uses navigator.geolocation to get current latitude/longitude in order to output relevent weather info along with reverse geolocation from Opencage api to provide city name*
+*ZenWeather is a web application that provides users with up-to-date weather information for their current location in the United States, along with city details obtained through reverse geolocation. Using navigator.geolocation, the application automatically retrieves the user's coordinates to display relevant weather data, enhanced by OpenCage's reverse geolocation for accurate city naming. Additionally, ZenWeather offers a daily dose of inspiration by randomly displaying an anime image and a Zen quote, creating a harmonious blend of information and relaxation.*
 ## APIS
 - zenquotes API [Zenquotes](https://zenquotes.io/)
 - weather API [Open-Meteo](https://open-meteo.com/en/docs)
