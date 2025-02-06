@@ -84,7 +84,7 @@ function App() {
     // Function to fetch quotes from either Quotable.io or ZenQuotes.io
     const fetchZenQuote = async () => {
         
-        const useQuotable = Math.random() < 0.01; // Randomly decide which API to use (1% chance to choose quotable API)
+        const useQuotable = Math.random();
         try {
             let response;
             if (useQuotable) {
